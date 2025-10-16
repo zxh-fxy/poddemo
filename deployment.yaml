@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: podapp
+  labels:
+    app: podapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: podapp
+  template:
+    metadata:
+      labels:
+        app: podapp
+    spec:
+      containers:
+        - name: podapp
+          image: docker.io/zxhygf/podapp:2.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: podapp-service
+spec:
+  selector:
+    app: podapp
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: NodePort   # 或 LoadBalancer（如果你在云上）
